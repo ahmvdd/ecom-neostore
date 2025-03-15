@@ -38,13 +38,14 @@ export default function Home() {
           <div className="flex items-center justify-center h-screen bg-gray-900">
   <div className="relative h-screen w-screen overflow-hidden">
   <div className="relative h-screen w-screen overflow-hidden">
+  <div className="relative h-screen w-screen overflow-hidden">
   <video
     src="/dream.mp4" // Chemin de la vidéo dans le dossier public
     autoPlay // La vidéo se lance automatiquement
     loop // La vidéo se répète en boucle
-    controls // Ajoute des contrôles pour la vidéo (optionnel)
-    className="absolute top-0 left-0 w-full h-full object-cover"
+     className="absolute top-0 left-0 w-full h-full object-cover"
   />
+</div>
 </div>
 </div>
 </div>

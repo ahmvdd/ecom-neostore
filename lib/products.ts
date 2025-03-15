@@ -5,7 +5,7 @@ export const products = [
     name: "NeoSync X1",
     price: 89.99,
     category: "réalité augmentée",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/merc5.png", // Utilise merc5.png
     description:
       "Interface neurale de nouvelle génération permettant une immersion totale dans les environnements virtuels avec retour haptique avancé.",
   },
@@ -14,7 +14,7 @@ export const products = [
     name: "Quantum Pulse",
     price: 129.99,
     category: "intelligence artificielle",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/merc5.png", // Utilise merc5.png
     description:
       "Assistant personnel quantique capable d'apprendre et d'anticiper vos besoins grâce à son algorithme d'auto-évolution.",
   },
@@ -23,7 +23,7 @@ export const products = [
     name: "BioMatrix Fabric",
     price: 199.99,
     category: "biotechnologie",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/merc5.png", // Utilise merc5.png
     description:
       "Vêtement intelligent qui s'adapte à votre température corporelle et à votre environnement pour un confort optimal en toutes circonstances.",
   },
@@ -32,7 +32,7 @@ export const products = [
     name: "HoloLens Pro",
     price: 299.99,
     category: "réalité augmentée",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/merc5.png", // Utilise merc5.png
     description:
       "Projecteur holographique personnel créant des interfaces 3D interactives dans votre espace de vie ou de travail.",
   },
@@ -41,7 +41,7 @@ export const products = [
     name: "NeuroPod",
     price: 79.99,
     category: "intelligence artificielle",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/merc5.png", // Utilise merc5.png
     description:
       "Dispositif d'amélioration cognitive utilisant la stimulation neuronale ciblée pour optimiser vos performances mentales.",
   },
@@ -50,7 +50,7 @@ export const products = [
     name: "ChromaShift",
     price: 159.99,
     category: "biotechnologie",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/merc5.png", // Utilise merc5.png
     description:
       "Accessoire de modification d'apparence utilisant des nano-pigments programmables pour changer de couleur et de motif à la demande.",
   },
@@ -59,7 +59,7 @@ export const products = [
     name: "EchoSphere",
     price: 149.99,
     category: "intelligence artificielle",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/merc5.png", // Utilise merc5.png
     description:
       "Système audio spatial créant des environnements sonores immersifs qui s'adaptent à votre humeur et à votre activité.",
   },
@@ -68,9 +68,8 @@ export const products = [
     name: "QuantumShield",
     price: 249.99,
     category: "biotechnologie",
-    image: "/placeholder.svg?height=300&width=300",
+    image: "/merc5.png", // Utilise merc5.png
     description:
       "Dispositif de protection personnelle générant un champ de force quantique capable de neutraliser les menaces environnementales.",
   },
-]
-
+];

@@ -1,5 +1,5 @@
 "use client"
-
+//l permet à l'utilisateur de sélectionner une catégorie pour filtrer les produits affichés
 import { Button } from "@/components/ui/button"
 
 interface ProductFiltersProps {

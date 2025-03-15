@@ -67,7 +67,7 @@ export default function NotreHistoirePage() {
                 <TimelineEvent
                   year="2035"
                   title="La Genèse"
-                  description="Fondée par deux visionnaires, Dr. Elena Chen et Dr. Marcus Webb, NeoTech émerge d'un laboratoire de recherche quantique à l'Université de Nouvelle Zurich. Leur vision : créer une symbiose parfaite entre l'humain et la technologie."
+                  description="Fondée par deux visionnaires, Dr. sayeeeh et Dr. Ahmeedd, NeoTech émerge d'un laboratoire de recherche quantique à l'Université de Nouvelle Zurich. Leur vision : créer une symbiose parfaite entre l'humain et la technologie."
                   image="/placeholder.svg?height=800&width=600&text="
                   alignment="right"
                   delay={0.1}
@@ -172,7 +172,7 @@ export default function NotreHistoirePage() {
                     "Nous ne créons pas simplement des produits, nous façonnons l'avenir. Chaque innovation est une
                     étape vers un monde où technologie et humanité évoluent en parfaite harmonie."
                   </p>
-                  <p className="text-primary mt-4">— Dr. Elena Chen, Co-fondatrice</p>
+                  <p className="text-primary mt-4">—sayeeeh / ahhhmeddd</p>
                 </div>
               </div>
             </motion.div>

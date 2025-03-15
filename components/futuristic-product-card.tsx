@@ -1,5 +1,5 @@
 "use client"
-
+//ce est conçu pour afficher les détails d'un produit (nom, prix, catégorie, description, image)
 import type React from "react"
 
 import { useState } from "react"
@@ -47,9 +47,13 @@ export default function FuturisticProductCard({ product }: ProductCardProps) {
     >
       <div className="relative">
         <div className="relative h-56 w-full overflow-hidden">
-          <Image src={product.image || "/public/images/image2.jpg"} alt={product.name} fill className="object-cover transition-transform duration-700" 
-          style={{ transform: isHovered ? "scale(1.1)" : "scale(1)" }}
-          />
+        <Image
+          src={product.image || "/merc5.png"} // Utilise merc5.png si product.image est manquant
+          alt={product.name}
+          fill
+          className="object-cover transition-transform duration-700"
+          style={{ transform: isHovered ? "scale(1.1)" : "scale(1)" }}          
+        />
 
           {/* Holographic effect overlay */}
           <div

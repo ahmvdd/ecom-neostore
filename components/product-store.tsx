@@ -1,9 +1,9 @@
 "use client"
+//fonctionnalités de recherche et de filtrage des produits. Il permet aux utilisateurs de parcourir les produits, de les filtrer par catégorie et de les rechercher par nom.
 
 import { useState } from "react"
 import { Search } from "lucide-react"
 import Link from "next/link"
-
 import { Input } from "@/components/ui/input"
 import ProductCard from "@/components/product-card"
 import ProductFilters from "@/components/product-filters"

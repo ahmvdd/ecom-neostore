@@ -1,5 +1,5 @@
 "use client"
-
+//fonctionnalités de recherche, de filtrage et d'affichage des produits    "Catalogue Technologique"
 import { useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"

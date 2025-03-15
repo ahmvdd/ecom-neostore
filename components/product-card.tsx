@@ -1,5 +1,5 @@
 "use client"
-
+//Il est conçu pour afficher les informations d'un produit (nom, prix, catégorie, description, image)
 import type React from "react"
 
 import Image from "next/image"
@@ -33,7 +33,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     <Card className="overflow-hidden transition-all duration-200 hover:shadow-md h-full">
       <CardHeader className="p-0">
         <div className="relative h-48 w-full overflow-hidden">
-        <Image src="/public/51cfd3_3c476b28dddd4baa929378b0e5f6f3f0~mv2.png" alt={product.name} fill />
+          <Image src={product.image || "/placeholder.svg"} alt={product.name} fill className="object-cover transition-transform duration-300 hover:scale-105" />
         </div>
         <Badge className="absolute top-2 right-2 capitalize">{product.category}</Badge>
       </CardHeader>
