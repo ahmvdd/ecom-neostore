@@ -20,8 +20,8 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-space)", "var(--font-inter)", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
-        display: ["var(--font-space)", "sans-serif"],
+        sans: ["var(--font-syne)", "var(--font-inter)", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+        display: ["var(--font-syne)", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

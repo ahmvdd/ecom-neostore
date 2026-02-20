@@ -6,6 +6,7 @@ import Image from "next/image"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
 import FuturisticNavbar from "@/components/futuristic-navbar"
 import Footer from "@/components/footer"
+import HeroCanvas from "@/components/hero-canvas"
 import { products } from "@/lib/products"
 
 export default function Home() {
@@ -19,24 +20,12 @@ export default function Home() {
 
       {/* Hero — plein écran sombre */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Video */}
-        <div className="absolute inset-0">
-          <video src="/hero_tech.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover opacity-20" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#07070e]/70 via-[#07070e]/30 to-[#07070e]" />
-        </div>
-
-        {/* Grille décorative */}
-        <div
-          className="absolute inset-0 opacity-[0.025]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(212,168,83,1) 1px, transparent 1px), linear-gradient(to right, rgba(212,168,83,1) 1px, transparent 1px)",
-            backgroundSize: "72px 72px",
-          }}
-        />
+        {/* Canvas animé — particules dorées + grille */}
+        <HeroCanvas />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#07070e]/60 via-transparent to-[#07070e]" />
 
         {/* Halo doré */}
-        <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] rounded-full bg-[#d4a853]/5 blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] rounded-full bg-[#d4a853]/6 blur-[140px] pointer-events-none" />
 
         <div className="relative container mx-auto px-4 py-32 md:py-40">
           <div className="max-w-3xl">
