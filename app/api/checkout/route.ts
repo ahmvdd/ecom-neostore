@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
-import { stripe } from "@/lib/stripe"
+import { getStripe } from "@/lib/stripe"
+
+export const dynamic = "force-dynamic"
 
 interface CartItem {
   id: number
@@ -18,6 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3002"
+    const stripe = getStripe()
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -33,7 +36,7 @@ export async function POST(request: NextRequest) {
             name: item.name,
             images: item.image.startsWith("http") ? [item.image] : [`${baseUrl}${item.image}`],
           },
-          unit_amount: Math.round(item.price * 100), // Stripe uses cents
+          unit_amount: Math.round(item.price * 100),
         },
         quantity: item.quantity,
       })),

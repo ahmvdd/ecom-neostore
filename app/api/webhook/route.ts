@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
-import { stripe } from "@/lib/stripe"
+import { getStripe } from "@/lib/stripe"
+
+export const dynamic = "force-dynamic"
 
 export async function POST(request: NextRequest) {
   const body = await request.text()
@@ -10,16 +12,17 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
-    )
+    const stripe = getStripe()
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
+    if (!webhookSecret) {
+      return NextResponse.json({ error: "Webhook secret not configured" }, { status: 500 })
+    }
+
+    const event = stripe.webhooks.constructEvent(body, signature, webhookSecret)
 
     if (event.type === "checkout.session.completed") {
       const session = event.data.object
 
-      // Retrieve full session with shipping details
       const fullSession = await stripe.checkout.sessions.retrieve(session.id, {
         expand: ["line_items"],
       })
