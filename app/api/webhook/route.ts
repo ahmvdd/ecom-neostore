@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getStripe } from "@/lib/stripe"
 
 export const dynamic = "force-dynamic"
 
 export async function POST(request: NextRequest) {
+  const key = process.env.STRIPE_SECRET_KEY
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
+
+  if (!key || !webhookSecret) {
+    return NextResponse.json({ error: "Stripe non configuré" }, { status: 503 })
+  }
+
   const body = await request.text()
   const signature = request.headers.get("stripe-signature")
 
@@ -12,11 +18,9 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const stripe = getStripe()
-    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
-    if (!webhookSecret) {
-      return NextResponse.json({ error: "Webhook secret not configured" }, { status: 500 })
-    }
+    // Import dynamique — Stripe n'est jamais chargé au build
+    const { default: Stripe } = await import("stripe")
+    const stripe = new Stripe(key, { apiVersion: "2026-01-28.clover", typescript: true })
 
     const event = stripe.webhooks.constructEvent(body, signature, webhookSecret)
 

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getStripe } from "@/lib/stripe"
 
 export const dynamic = "force-dynamic"
 
@@ -12,6 +11,11 @@ interface CartItem {
 }
 
 export async function POST(request: NextRequest) {
+  const key = process.env.STRIPE_SECRET_KEY
+  if (!key) {
+    return NextResponse.json({ error: "Stripe non configuré" }, { status: 503 })
+  }
+
   try {
     const { items } = (await request.json()) as { items: CartItem[] }
 
@@ -20,7 +24,10 @@ export async function POST(request: NextRequest) {
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3002"
-    const stripe = getStripe()
+
+    // Import dynamique — Stripe n'est jamais chargé au build
+    const { default: Stripe } = await import("stripe")
+    const stripe = new Stripe(key, { apiVersion: "2026-01-28.clover", typescript: true })
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
