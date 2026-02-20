@@ -21,7 +21,7 @@ export default function FuturisticNavbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="font-extrabold text-xl text-foreground tracking-tight">
-            Neo<span className="text-[hsl(211,100%,44%)]">Store</span>
+            Tech<span className="text-[hsl(211,100%,44%)]">Paris</span>
           </Link>
 
           {/* Nav links desktop */}

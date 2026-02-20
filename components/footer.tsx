@@ -9,7 +9,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <span className="font-extrabold text-xl">
-              Neo<span className="text-[hsl(211,100%,44%)]">Store</span>
+              Tech<span className="text-[hsl(211,100%,44%)]">Paris</span>
             </span>
             <p className="text-sm text-muted-foreground mt-4 leading-relaxed">
               Smartphones, ordinateurs, audio et électroménager premium. Livraison gratuite et retours 30 jours.
@@ -75,7 +75,7 @@ export default function Footer() {
         <div className="h-px bg-border mt-10 mb-6" />
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} NeoStore. Tous droits réservés.</p>
+          <p>&copy; {new Date().getFullYear()} Tech Paris. Tous droits réservés.</p>
           <div className="flex gap-6">
             <Link href="#" className="hover:text-foreground transition-colors">Mentions légales</Link>
             <Link href="#" className="hover:text-foreground transition-colors">Confidentialité</Link>

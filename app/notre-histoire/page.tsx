@@ -3,184 +3,133 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
-
+import { ArrowRight, Award, Users, MapPin, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import FuturisticNavbar from "@/components/futuristic-navbar"
 import Footer from "@/components/footer"
 
 export default function NotreHistoirePage() {
   const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
+  useEffect(() => { setMounted(true) }, [])
   if (!mounted) return null
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       <FuturisticNavbar />
 
-      <main className="flex-1 pt-12 pb-16">
-        <div className="container mx-auto px-4">
-          <Link href="/" className="inline-flex items-center text-xs uppercase tracking-widest mb-10 text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="mr-2 h-3 w-3" />
-            Retour à l'accueil
-          </Link>
+      <main className="flex-1">
+        {/* Hero */}
+        <section className="bg-[#1d1d1f] text-white py-24">
+          <div className="container mx-auto px-4 text-center">
+            <p className="text-[hsl(211,100%,70%)] text-sm font-semibold uppercase tracking-widest mb-4">
+              Fondée à Paris en 2018
+            </p>
+            <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+              Notre Histoire
+            </h1>
+            <p className="text-white/60 max-w-xl mx-auto text-lg leading-relaxed">
+              Depuis 2018, Tech Paris accompagne les parisiens dans leurs achats high-tech avec passion et expertise.
+            </p>
+          </div>
+        </section>
 
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-20">
-              <p className="text-xs uppercase tracking-[0.3em] accent-text mb-4">Depuis 2035</p>
-              <h1 className="font-display text-4xl md:text-6xl mb-6">Notre Histoire</h1>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
-                De la vision à la réalité : comment nous avons redéfini les frontières de la technologie.
-              </p>
-            </div>
-
-            {/* Timeline */}
-            <div className="space-y-24">
-              <TimelineEvent
-                year="2035"
-                title="La Genèse"
-                description="Fondée par deux visionnaires, NeoStore émerge d'un laboratoire de recherche avec une mission audacieuse : fusionner l'humanité et la technologie pour créer un avenir sans limites."
-                image="/merc.jpg"
-                reverse={false}
-              />
-
-              <TimelineEvent
-                year="2038"
-                title="Première Percée"
-                description="Après trois années de recherche intensive, notre équipe développe le premier prototype d'interface neurale non-invasive. Une technologie qui permet une communication directe entre le cerveau humain et les systèmes informatiques."
-                image="/merc2.jpg"
-                reverse={true}
-              />
-
-              <TimelineEvent
-                year="2040"
-                title="Expansion Globale"
-                description="Nous ouvrons des centres de recherche à Tokyo, Silicon Valley et Berlin. Notre équipe s'agrandit pour inclure les meilleurs talents en intelligence artificielle, biotechnologie et réalité augmentée."
-                image="/merc5.png"
-                reverse={false}
-              />
-
-              <TimelineEvent
-                year="2042"
-                title="Révolution Quantique"
-                description="Le lancement de notre processeur quantique révolutionne l'industrie. Cette avancée permet le développement d'intelligences artificielles avancées et marque le début d'une nouvelle ère."
-                image="/merc.jpg"
-                reverse={true}
-              />
-
-              <TimelineEvent
-                year="2045"
-                title="Aujourd'hui"
-                description="Avec plus de 12 millions de clients à travers le monde, NeoStore continue de repousser les frontières du possible. Notre mission reste inchangée : créer des technologies qui augmentent le potentiel humain."
-                image="/merc2.jpg"
-                reverse={false}
-              />
-            </div>
-
-            {/* Values Section */}
-            <div className="mt-32 mb-20">
-              <div className="text-center mb-16">
-                <p className="text-xs uppercase tracking-[0.3em] accent-text mb-4">Nos Principes</p>
-                <h2 className="font-display text-3xl md:text-4xl">Valeurs Fondamentales</h2>
-              </div>
-
-              <div className="grid md:grid-cols-3 gap-12">
-                <ValueCard
-                  title="Innovation Éthique"
-                  description="Nous repoussons les limites de la technologie tout en maintenant des standards éthiques rigoureux qui placent l'humain au centre."
-                />
-                <ValueCard
-                  title="Symbiose Technologique"
-                  description="Nous créons des technologies qui s'intègrent harmonieusement à la vie humaine, augmentant nos capacités sans jamais nous remplacer."
-                />
-                <ValueCard
-                  title="Accessibilité Universelle"
-                  description="Nous croyons que les avancées technologiques doivent bénéficier à tous, indépendamment de leur origine ou de leur statut."
-                />
-              </div>
-            </div>
-
-            {/* Team Section */}
-            <div className="mt-32">
-              <div className="relative h-[500px] w-full overflow-hidden mb-16">
-                <Image
-                  src="/merc5.png"
-                  alt="Notre équipe"
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-
-                <div className="absolute bottom-0 left-0 right-0 p-12">
-                  <p className="font-display text-xl text-white/90 max-w-2xl italic leading-relaxed">
-                    &ldquo;Nous ne créons pas simplement des produits, nous façonnons l'avenir. Chaque innovation est une
-                    étape vers un monde où technologie et humanité évoluent en parfaite harmonie.&rdquo;
-                  </p>
-                  <div className="w-12 h-px bg-white/30 my-4" />
-                  <p className="text-white/50 text-sm uppercase tracking-widest">L'équipe fondatrice</p>
+        {/* Stats */}
+        <section className="bg-[#f5f5f7] py-14">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+              {[
+                { icon: Users, value: "50 000+", label: "Clients satisfaits" },
+                { icon: Award, value: "7 ans", label: "D'expertise" },
+                { icon: MapPin, value: "Paris", label: "Basé en France" },
+                { icon: Zap, value: "4.9/5", label: "Note moyenne" },
+              ].map(({ icon: Icon, value, label }) => (
+                <div key={label} className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 rounded-full bg-[hsl(211,100%,44%)]/10 flex items-center justify-center">
+                    <Icon className="h-5 w-5 text-[hsl(211,100%,44%)]" />
+                  </div>
+                  <span className="text-2xl font-extrabold">{value}</span>
+                  <span className="text-sm text-muted-foreground">{label}</span>
                 </div>
-              </div>
-            </div>
-
-            <div className="flex justify-center mt-20">
-              <Button size="lg" className="accent-bg text-white hover:opacity-90 uppercase tracking-widest text-xs px-10 py-6" asChild>
-                <Link href="/products">Découvrir nos créations</Link>
-              </Button>
+              ))}
             </div>
           </div>
-        </div>
+        </section>
+
+        {/* Story */}
+        <section className="py-20 container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-16 items-center max-w-5xl mx-auto">
+            <div className="relative h-[420px] rounded-2xl overflow-hidden">
+              <Image src="/macbook.jpg" alt="Tech Paris" fill className="object-cover" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-[hsl(211,100%,44%)] uppercase tracking-widest mb-3">2018 — Les débuts</p>
+              <h2 className="text-3xl font-extrabold mb-5 leading-tight">Née de la passion pour la tech</h2>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Tech Paris a été fondée en 2018 par une équipe passionnée de technologie, avec une idée simple : proposer les meilleurs produits électroniques aux meilleurs prix, avec un service irréprochable.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                Basés au cœur de Paris, nous avons rapidement gagné la confiance de milliers de clients grâce à notre sélection rigoureuse et notre accompagnement personnalisé.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-20 bg-[#f5f5f7]">
+          <div className="container mx-auto px-4">
+            <div className="grid md:grid-cols-2 gap-16 items-center max-w-5xl mx-auto">
+              <div className="md:order-2 relative h-[420px] rounded-2xl overflow-hidden">
+                <Image src="/iphone.jpg" alt="Tech Paris sélection" fill className="object-cover" />
+              </div>
+              <div className="md:order-1">
+                <p className="text-xs font-semibold text-[hsl(211,100%,44%)] uppercase tracking-widest mb-3">Notre engagement</p>
+                <h2 className="text-3xl font-extrabold mb-5 leading-tight">La qualité avant tout</h2>
+                <p className="text-muted-foreground leading-relaxed mb-4">
+                  Chaque produit que nous proposons est soigneusement sélectionné. Nous travaillons directement avec les grands fabricants — Apple, Samsung, Dyson, LG — pour vous garantir l'authenticité et les meilleures conditions tarifaires.
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  Livraison rapide, retours gratuits sous 30 jours, SAV réactif : nous ne faisons aucun compromis sur l'expérience client.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Values */}
+        <section className="py-20 container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-extrabold mb-3">Nos valeurs</h2>
+            <p className="text-muted-foreground max-w-md mx-auto">Ce qui nous guide chaque jour pour vous offrir la meilleure expérience.</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            {[
+              { title: "Authenticité", desc: "100% de produits officiels, achetés auprès des distributeurs agréés. Zéro contrefaçon, garantie fabricant incluse." },
+              { title: "Transparence", desc: "Prix clairs, sans frais cachés. Nous affichons toujours le prix TTC final, livraison comprise dès 50€." },
+              { title: "Proximité", desc: "Une équipe française, disponible 7j/7, qui répond en moins de 2h à toutes vos questions avant et après achat." },
+            ].map((val) => (
+              <div key={val.title} className="bg-[#f5f5f7] rounded-2xl p-6">
+                <div className="w-2 h-8 bg-[hsl(211,100%,44%)] rounded-full mb-4" />
+                <h3 className="font-bold text-lg mb-2">{val.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{val.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="bg-[hsl(211,100%,44%)] py-16">
+          <div className="container mx-auto px-4 text-center text-white">
+            <h2 className="text-3xl font-extrabold mb-4">Prêt à découvrir nos produits ?</h2>
+            <p className="text-white/80 mb-8">Les meilleures marques tech, au meilleur prix parisien.</p>
+            <Button size="lg" className="bg-white text-[hsl(211,100%,44%)] hover:bg-white/90 font-bold rounded-xl px-10" asChild>
+              <Link href="/products">
+                Voir la boutique <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </section>
       </main>
 
       <Footer />
-    </div>
-  )
-}
-
-interface TimelineEventProps {
-  year: string
-  title: string
-  description: string
-  image: string
-  reverse: boolean
-}
-
-function TimelineEvent({ year, title, description, image, reverse }: TimelineEventProps) {
-  return (
-    <div className={`grid md:grid-cols-2 gap-12 lg:gap-20 items-center`}>
-      <div className={`${reverse ? "md:order-2" : ""}`}>
-        <div className="relative h-[350px] overflow-hidden">
-          <Image src={image} alt={title} fill className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-8">
-            <span className="font-display text-4xl text-white">{year}</span>
-          </div>
-        </div>
-      </div>
-
-      <div className={`${reverse ? "md:order-1" : ""}`}>
-        <div className="w-8 h-px accent-bg mb-6" />
-        <h3 className="font-display text-2xl mb-4">{title}</h3>
-        <p className="text-muted-foreground font-light leading-relaxed">{description}</p>
-      </div>
-    </div>
-  )
-}
-
-interface ValueCardProps {
-  title: string
-  description: string
-}
-
-function ValueCard({ title, description }: ValueCardProps) {
-  return (
-    <div className="text-center">
-      <div className="w-8 h-px accent-bg mx-auto mb-6" />
-      <h3 className="font-display text-xl mb-4">{title}</h3>
-      <p className="text-muted-foreground text-sm font-light leading-relaxed">{description}</p>
     </div>
   )
 }

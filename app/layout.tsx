@@ -10,12 +10,12 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter", weight: ["40
 
 export const metadata: Metadata = {
   title: {
-    default: "NeoStore — Électronique Premium",
-    template: "%s | NeoStore",
+    default: "Tech Paris — Électronique Premium",
+    template: "%s | Tech Paris",
   },
   description: "Smartphones, ordinateurs, audio et électroménager au meilleur prix. Livraison gratuite et retours 30 jours.",
   openGraph: {
-    title: "NeoStore — Électronique Premium",
+    title: "Tech Paris — Électronique Premium",
     description: "Smartphones, ordinateurs, audio et électroménager au meilleur prix.",
     type: "website",
     locale: "fr_FR",

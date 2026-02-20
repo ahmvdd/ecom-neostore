@@ -22,18 +22,18 @@ export default function Home() {
       {/* Hero */}
       <section className="relative bg-[#1d1d1f] text-white overflow-hidden">
         <div className="absolute inset-0">
-          <video src="/dream.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover opacity-40" />
+          <video src="/tech_paris.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover opacity-40" />
         </div>
         <div className="relative container mx-auto px-4 py-28 md:py-36">
           <div className="max-w-2xl">
             <p className="text-[hsl(211,100%,70%)] text-sm font-semibold uppercase tracking-widest mb-4">
-              Nouveautés 2025
+              Tech Paris — Spécialiste Électronique
             </p>
             <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
-              La technologie<br />à son meilleur
+              La tech premium<br />au cœur de Paris
             </h1>
             <p className="text-lg text-white/70 mb-10 max-w-lg leading-relaxed">
-              Smartphones, ordinateurs, audio et électroménager premium. Les meilleures marques au meilleur prix.
+              iPhone, MacBook, Samsung et plus. Les meilleures marques au meilleur prix, livrées partout en France.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
@@ -110,8 +110,8 @@ export default function Home() {
       <section className="py-6 pb-20 container mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-2xl font-bold text-foreground">Produits populaires</h2>
-            <p className="text-sm text-muted-foreground mt-1">Les plus appréciés par nos clients</p>
+            <h2 className="text-2xl font-bold text-foreground">Meilleures ventes</h2>
+            <p className="text-sm text-muted-foreground mt-1">Les produits les plus appréciés de nos clients parisiens</p>
           </div>
           <Link href="/products" className="text-sm text-[hsl(211,100%,44%)] font-medium flex items-center gap-1 hover:underline">
             Voir tout <ChevronRight className="h-4 w-4" />
@@ -153,12 +153,12 @@ export default function Home() {
       {/* Promo Banner */}
       <section className="bg-[#1d1d1f] text-white py-20">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-[hsl(211,100%,70%)] text-sm font-semibold uppercase tracking-widest mb-4">Offre limitée</p>
+          <p className="text-[hsl(211,100%,70%)] text-sm font-semibold uppercase tracking-widest mb-4">Offre Paris Exclusive</p>
           <h2 className="text-3xl md:text-5xl font-extrabold mb-6">
             Jusqu'à <span className="text-[hsl(211,100%,70%)]">-30%</span> sur<br className="hidden md:block" /> une sélection de produits
           </h2>
           <p className="text-white/60 mb-10 max-w-md mx-auto">
-            Profitez de nos meilleures offres sur les smartphones, ordinateurs et audio premium.
+            Tech Paris vous propose les meilleures offres sur iPhone, MacBook, Samsung et bien plus encore.
           </p>
           <Link
             href="/products"
