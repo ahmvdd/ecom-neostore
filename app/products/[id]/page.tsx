@@ -3,374 +3,290 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { motion } from "framer-motion"
-import { ArrowLeft, ShoppingCart, Heart, Share2, Star, Plus, Minus } from "lucide-react"
+import { useRouter, useParams } from "next/navigation"
+import { ArrowLeft, ShoppingCart, Heart, Share2, Star, Plus, Minus, Truck, RotateCcw, Shield, Check } from "lucide-react"
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
 import { products } from "@/lib/products"
+import { useCart } from "@/lib/cart-context"
 import FuturisticNavbar from "@/components/futuristic-navbar"
+import Footer from "@/components/footer"
 
-export default function ProductPage({ params }: { params: { id: string } }) {
+const reviews = [
+  {
+    name: "Alexandre M.",
+    date: "Il y a 2 jours",
+    rating: 5,
+    text: "Produit exceptionnel, livraison rapide et emballage soigné. Je recommande vivement NeoStore pour la qualité du service et des produits.",
+  },
+  {
+    name: "Sophie L.",
+    date: "Il y a 1 semaine",
+    rating: 4,
+    text: "Très satisfaite de mon achat. Le produit est conforme à la description, performant et bien fini. Petit bémol sur l'autonomie mais rien de rédhibitoire.",
+  },
+  {
+    name: "Thomas D.",
+    date: "Il y a 2 semaines",
+    rating: 5,
+    text: "Un investissement qui en vaut largement la peine. Design premium, performances au top, SAV réactif. Je suis client fidèle NeoStore depuis 2 ans.",
+  },
+]
+
+export default function ProductPage() {
   const router = useRouter()
-  const productId = Number.parseInt(params.id)
+  const params = useParams()
+  const productId = Number.parseInt(params.id as string, 10)
   const product = products.find((p) => p.id === productId)
+  const { addItem } = useCart()
 
   const [quantity, setQuantity] = useState(1)
   const [activeImage, setActiveImage] = useState(0)
   const [mounted, setMounted] = useState(false)
+  const [isWishlisted, setIsWishlisted] = useState(false)
+  const [added, setAdded] = useState(false)
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  useEffect(() => { setMounted(true) }, [])
 
   if (!mounted) return null
+  if (!product) { router.push("/products"); return null }
 
-  if (!product) {
-    router.push("/products")
-    return null
+  const handleAddToCart = () => {
+    addItem({ id: product.id, name: product.name, price: product.price, image: product.image }, quantity)
+    toast.success(`${product.name} ajouté au panier`)
+    setAdded(true)
+    setTimeout(() => setAdded(false), 2000)
   }
 
-  // Generate multiple product images for the gallery
-  const productImages = [
-    product.image,
-    "/placeholder.svg?height=600&width=600",
-    "/placeholder.svg?height=600&width=600",
-    "/placeholder.svg?height=600&width=600",
-  ]
+  const handleWishlist = () => {
+    setIsWishlisted(!isWishlisted)
+    toast.success(isWishlisted ? "Retiré des favoris" : "Ajouté aux favoris")
+  }
 
-  const incrementQuantity = () => setQuantity((prev) => prev + 1)
-  const decrementQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      toast.success("Lien copié !")
+    } catch {
+      toast.error("Impossible de copier le lien")
+    }
+  }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white flex flex-col">
       <FuturisticNavbar />
 
-      <main className="pt-24 pb-16">
-        <div className="container mx-auto px-4">
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-            <Link
-              href="/products"
-              className="inline-flex items-center text-sm mb-8 hover:text-primary transition-colors"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Retour aux produits
-            </Link>
-          </motion.div>
+      <main className="flex-1">
+        <div className="container mx-auto px-4 py-8">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
+            <Link href="/" className="hover:text-foreground transition-colors">Accueil</Link>
+            <span>/</span>
+            <Link href="/products" className="hover:text-foreground transition-colors">Produits</Link>
+            <span>/</span>
+            <span className="text-foreground font-medium">{product.name}</span>
+          </div>
 
-          <div className="grid md:grid-cols-2 gap-12 lg:gap-16">
-            {/* Product Images */}
-            <motion.div
-              className="space-y-6"
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="relative aspect-square rounded-2xl overflow-hidden glass-card border border-primary/20">
-                <Image
-                  src={productImages[activeImage] || "/placeholder.svg"}
-                  alt={product.name}
-                  fill
-                  className="object-cover"
-                  priority
-                />
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
+            {/* Images */}
+            <div className="space-y-3">
+              <div className="relative aspect-square bg-[#f5f5f7] rounded-2xl overflow-hidden">
+                <Image src={product.images[activeImage]} alt={product.name} fill className="object-cover" priority />
+                {product.stock <= 5 && (
+                  <div className="absolute top-4 left-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                    Dernières pièces
+                  </div>
+                )}
+              </div>
+              <div className="grid grid-cols-4 gap-2">
+                {product.images.map((image, i) => (
+                  <button
+                    key={image}
+                    type="button"
+                    onClick={() => setActiveImage(i)}
+                    className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-colors ${
+                      activeImage === i ? "border-[hsl(211,100%,44%)]" : "border-transparent hover:border-border"
+                    }`}
+                  >
+                    <Image src={image} alt={`Vue ${i + 1}`} fill className="object-cover bg-[#f5f5f7]" />
+                  </button>
+                ))}
+              </div>
+            </div>
 
-                {/* Holographic effect overlay */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 to-blue-500/10" />
+            {/* Info */}
+            <div className="space-y-6">
+              <div>
+                <p className="text-xs font-semibold text-[hsl(211,100%,44%)] uppercase tracking-widest mb-2">{product.category}</p>
+                <h1 className="text-3xl font-extrabold text-foreground leading-tight mb-3">{product.name}</h1>
+                <div className="flex items-center gap-2">
+                  <div className="flex">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star key={star} className={`h-4 w-4 ${star <= product.rating ? "fill-amber-400 text-amber-400" : "text-gray-300"}`} />
+                    ))}
+                  </div>
+                  <span className="text-sm text-muted-foreground">{product.reviewCount} avis vérifiés</span>
+                </div>
               </div>
 
-              <div className="grid grid-cols-4 gap-3">
-                {productImages.map((image, i) => (
-                  <div
-                    key={i}
-                    className={`relative aspect-square rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ${
-                      activeImage === i
-                        ? "border-2 border-primary neon-border"
-                        : "border border-primary/20 opacity-70 hover:opacity-100"
-                    }`}
-                    onClick={() => setActiveImage(i)}
-                  >
-                    <Image
-                      src={image || "/placeholder.svg"}
-                      alt={`${product.name} view ${i + 1}`}
-                      fill
-                      className="object-cover"
-                    />
+              {/* Price */}
+              <div className="bg-[#f5f5f7] rounded-2xl p-5">
+                <div className="flex items-baseline gap-3 mb-2">
+                  <span className="text-4xl font-extrabold text-foreground">€{product.price.toLocaleString("fr-FR")}</span>
+                  <span className="text-sm text-green-600 font-semibold">En stock ({product.stock} dispo.)</span>
+                </div>
+                <p className="text-xs text-muted-foreground">Prix TTC • Livraison gratuite dès €50</p>
+              </div>
+
+              <p className="text-muted-foreground leading-relaxed">{product.description}</p>
+
+              {/* Quantity */}
+              <div>
+                <p className="text-sm font-semibold mb-3">Quantité</p>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center border border-border rounded-xl overflow-hidden">
+                    <Button variant="ghost" size="icon" className="h-10 w-10 rounded-none" onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
+                      <Minus className="h-3.5 w-3.5" />
+                    </Button>
+                    <span className="w-12 text-center font-semibold text-sm">{quantity}</span>
+                    <Button variant="ghost" size="icon" className="h-10 w-10 rounded-none" onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}>
+                      <Plus className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                  <span className="text-sm text-muted-foreground">Max. {product.stock} par commande</span>
+                </div>
+              </div>
+
+              {/* CTA */}
+              <div className="flex gap-3">
+                <Button
+                  size="lg"
+                  className="flex-1 bg-[hsl(211,100%,44%)] hover:bg-[hsl(211,100%,38%)] text-white font-semibold text-sm py-6 rounded-xl"
+                  onClick={handleAddToCart}
+                >
+                  {added ? <Check className="mr-2 h-4 w-4" /> : <ShoppingCart className="mr-2 h-4 w-4" />}
+                  {added ? "Ajouté !" : "Ajouter au panier"}
+                </Button>
+                <Button size="lg" variant="outline" className="rounded-xl py-6 px-4" onClick={handleWishlist}>
+                  <Heart className={`h-5 w-5 ${isWishlisted ? "fill-red-500 text-red-500" : ""}`} />
+                </Button>
+                <Button size="lg" variant="outline" className="rounded-xl py-6 px-4" onClick={handleShare}>
+                  <Share2 className="h-5 w-5" />
+                </Button>
+              </div>
+
+              {/* Trust */}
+              <div className="border border-border rounded-2xl p-4 space-y-3">
+                {[
+                  { icon: Truck, text: "Livraison gratuite dès €50 d'achat" },
+                  { icon: RotateCcw, text: "Retours gratuits sous 30 jours" },
+                  { icon: Shield, text: "Paiement 100% sécurisé" },
+                ].map(({ icon: Icon, text }) => (
+                  <div key={text} className="flex items-center gap-3 text-sm text-muted-foreground">
+                    <Icon className="h-4 w-4 text-[hsl(211,100%,44%)] flex-shrink-0" />
+                    {text}
                   </div>
                 ))}
               </div>
-            </motion.div>
-
-            {/* Product Details */}
-            <motion.div
-              className="space-y-8"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div>
-                <Badge className="mb-3 capitalize bg-primary/20 text-primary border-primary/50">
-                  {product.category}
-                </Badge>
-                <h1 className="text-3xl font-bold mb-3 gradient-text inline-block">{product.name}</h1>
-
-                <div className="flex items-center mt-2 space-x-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className={`h-5 w-5 ${i < 4 ? "fill-primary text-primary" : "text-gray-600"}`} />
-                  ))}
-                  <span className="text-sm text-gray-400 ml-2">(24 avis)</span>
-                </div>
-              </div>
-
-              <div className="text-3xl font-bold text-primary neon-text">€{product.price.toFixed(2)}</div>
-
-              <p className="text-gray-300">{product.description}</p>
-
-              <div className="space-y-6">
-                <div>
-                  <h3 className="font-medium mb-3 text-gray-200">Couleur</h3>
-                  <div className="flex space-x-3">
-                    {["bg-purple-500", "bg-blue-500", "bg-emerald-500", "bg-rose-500"].map((color, i) => (
-                      <div
-                        key={i}
-                        className={`${color} h-8 w-8 rounded-full cursor-pointer transition-all duration-300 ${
-                          i === 0
-                            ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
-                            : "hover:ring-2 hover:ring-primary/50 hover:ring-offset-2 hover:ring-offset-background"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="font-medium mb-3 text-gray-200">Configuration</h3>
-                  <div className="flex flex-wrap gap-3">
-                    {["Standard", "Pro", "Ultimate"].map((config, i) => (
-                      <div
-                        key={i}
-                        className={`h-10 min-w-[80px] flex items-center justify-center px-4 rounded-lg cursor-pointer transition-all duration-300 ${
-                          i === 1
-                            ? "bg-primary text-white"
-                            : "bg-secondary hover:bg-primary/20 border border-primary/30"
-                        }`}
-                      >
-                        {config}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="font-medium mb-3 text-gray-200">Quantité</h3>
-                  <div className="flex items-center space-x-3">
-                    <div className="flex items-center glass-card rounded-lg border border-primary/30">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-10 w-10 rounded-l-lg hover:bg-primary/20"
-                        onClick={decrementQuantity}
-                      >
-                        <Minus className="h-4 w-4" />
-                      </Button>
-                      <span className="w-12 text-center">{quantity}</span>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-10 w-10 rounded-r-lg hover:bg-primary/20"
-                        onClick={incrementQuantity}
-                      >
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <span className="text-sm text-gray-400">12 en stock</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <Button size="lg" className="flex-1 bg-primary/80 hover:bg-primary neon-border">
-                  <ShoppingCart className="mr-2 h-5 w-5" />
-                  Ajouter au panier
-                </Button>
-                <Button size="lg" variant="outline" className="flex-1 border-primary/50 hover:bg-primary/20">
-                  <Heart className="mr-2 h-5 w-5" />
-                  Ajouter aux favoris
-                </Button>
-              </div>
-
-              <div className="flex items-center justify-between pt-4">
-                <div className="text-sm text-gray-400">ID: {product.id.toString().padStart(6, "0")}</div>
-                <Button variant="ghost" size="sm" className="hover:bg-primary/20">
-                  <Share2 className="mr-2 h-4 w-4" />
-                  Partager
-                </Button>
-              </div>
-            </motion.div>
+            </div>
           </div>
 
-          <Separator className="my-16 opacity-30" />
-
-          {/* Product Tabs */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Tabs defaultValue="description" className="max-w-4xl mx-auto">
-              <TabsList className="grid w-full grid-cols-3 glass-card">
-                <TabsTrigger value="description">Description</TabsTrigger>
-                <TabsTrigger value="specifications">Spécifications</TabsTrigger>
-                <TabsTrigger value="reviews">Avis</TabsTrigger>
+          {/* Tabs */}
+          <div className="mt-16">
+            <Tabs defaultValue="specs">
+              <TabsList className="grid w-full grid-cols-3 bg-transparent border-b border-border rounded-none h-auto p-0 mb-8">
+                {[
+                  { value: "specs", label: "Spécifications" },
+                  { value: "description", label: "Description" },
+                  { value: "reviews", label: `Avis (${product.reviewCount})` },
+                ].map((tab) => (
+                  <TabsTrigger
+                    key={tab.value}
+                    value={tab.value}
+                    className="rounded-none border-b-2 border-transparent data-[state=active]:border-[hsl(211,100%,44%)] data-[state=active]:text-[hsl(211,100%,44%)] data-[state=active]:shadow-none font-medium text-sm py-4"
+                  >
+                    {tab.label}
+                  </TabsTrigger>
+                ))}
               </TabsList>
-              <TabsContent value="description" className="py-8">
-                <h3 className="text-xl font-bold mb-4 gradient-text inline-block">Description du produit</h3>
-                <div className="space-y-4 text-gray-300">
-                  <p>
-                    {product.description} Ce produit révolutionnaire est conçu pour offrir une expérience utilisateur
-                    sans précédent, fusionnant technologie de pointe et design futuriste.
-                  </p>
-                  <p>
-                    Équipé des dernières avancées en intelligence artificielle et en interface neurale, ce dispositif
-                    s'adapte parfaitement à vos besoins et préférences, créant une symbiose parfaite entre l'humain et
-                    la machine.
-                  </p>
-                  <p>
-                    Sa conception modulaire permet une personnalisation complète, tandis que son système
-                    d'auto-apprentissage évolue constamment pour améliorer ses performances et anticiper vos besoins.
-                  </p>
+
+              <TabsContent value="specs">
+                <div className="grid md:grid-cols-2 gap-x-16 max-w-3xl">
+                  {product.specs.map((spec) => (
+                    <div key={spec.label} className="flex justify-between py-3.5 border-b border-border">
+                      <span className="text-sm font-medium text-foreground">{spec.label}</span>
+                      <span className="text-sm text-muted-foreground">{spec.value}</span>
+                    </div>
+                  ))}
                 </div>
               </TabsContent>
-              <TabsContent value="specifications" className="py-8">
-                <h3 className="text-xl font-bold mb-4 gradient-text inline-block">Spécifications techniques</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
-                    <div className="flex justify-between py-2 border-b border-gray-800">
-                      <span className="font-medium text-gray-300">Processeur</span>
-                      <span className="text-gray-400">Quantum Core X9</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-gray-800">
-                      <span className="font-medium text-gray-300">Mémoire</span>
-                      <span className="text-gray-400">32 TB Holographique</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-gray-800">
-                      <span className="font-medium text-gray-300">Connectivité</span>
-                      <span className="text-gray-400">NeuroSync 3.0</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-gray-800">
-                      <span className="font-medium text-gray-300">Autonomie</span>
-                      <span className="text-gray-400">72 heures</span>
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex justify-between py-2 border-b border-gray-800">
-                      <span className="font-medium text-gray-300">Dimensions</span>
-                      <span className="text-gray-400">120 x 65 x 8 mm</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-gray-800">
-                      <span className="font-medium text-gray-300">Poids</span>
-                      <span className="text-gray-400">95g</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-gray-800">
-                      <span className="font-medium text-gray-300">Certification</span>
-                      <span className="text-gray-400">ISO Quantum 9001</span>
-                    </div>
-                    <div className="flex justify-between py-2 border-b border-gray-800">
-                      <span className="font-medium text-gray-300">Garantie</span>
-                      <span className="text-gray-400">5 ans</span>
-                    </div>
-                  </div>
+
+              <TabsContent value="description">
+                <div className="max-w-2xl space-y-4 text-muted-foreground leading-relaxed">
+                  <p>{product.description}</p>
+                  <p>Ce produit est couvert par une garantie fabricant de 2 ans. Le SAV NeoStore est disponible 7j/7 pour toute assistance.</p>
                 </div>
               </TabsContent>
-              <TabsContent value="reviews" className="py-8">
-                <h3 className="text-xl font-bold mb-4 gradient-text inline-block">Avis clients</h3>
-                <div className="space-y-8">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="glass-card p-6 rounded-xl">
-                      <div className="flex justify-between mb-3">
-                        <div className="font-medium text-gray-200">Utilisateur Néo-{i + 1}</div>
-                        <div className="text-sm text-gray-400">
-                          Il y a {i + 1} jour{i > 0 ? "s" : ""}
+
+              <TabsContent value="reviews">
+                <div className="space-y-6 max-w-2xl">
+                  {reviews.map((review) => (
+                    <div key={review.name} className="bg-[#f5f5f7] rounded-2xl p-5">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-9 h-9 bg-[hsl(211,100%,44%)] rounded-full flex items-center justify-center text-white font-bold text-sm">
+                            {review.name[0]}
+                          </div>
+                          <div>
+                            <p className="font-semibold text-sm">{review.name}</p>
+                            <p className="text-xs text-muted-foreground">{review.date}</p>
+                          </div>
+                        </div>
+                        <div className="flex">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star key={star} className={`h-3.5 w-3.5 ${star <= review.rating ? "fill-amber-400 text-amber-400" : "text-gray-300"}`} />
+                          ))}
                         </div>
                       </div>
-                      <div className="flex items-center mb-3">
-                        {[...Array(5)].map((_, j) => (
-                          <Star
-                            key={j}
-                            className={`h-4 w-4 ${j < 5 - i ? "fill-primary text-primary" : "text-gray-600"}`}
-                          />
-                        ))}
-                      </div>
-                      <p className="text-gray-300">
-                        Produit révolutionnaire qui a transformé ma façon d'interagir avec la technologie. L'interface
-                        neurale est incroyablement intuitive et la qualité de fabrication est exceptionnelle.
-                      </p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{review.text}</p>
                     </div>
                   ))}
                 </div>
               </TabsContent>
             </Tabs>
-          </motion.div>
+          </div>
 
-          {/* Related Products */}
-          <section className="mt-20">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-3xl font-bold mb-8 gradient-text inline-block"
-            >
-              Produits similaires
-            </motion.h2>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-            >
-              {products
-                .filter((p) => p.id !== product.id)
-                .slice(0, 4)
-                .map((relatedProduct, index) => (
-                  <motion.div key={relatedProduct.id} whileHover={{ y: -10 }} transition={{ duration: 0.3 }}>
-                    <Link
-                      href={`/products/${relatedProduct.id}`}
-                      className="block rounded-2xl overflow-hidden glass-card hover:neon-border transition-all duration-300"
-                    >
-                      <div className="relative h-48 w-full overflow-hidden">
-                        <Image
-                          src={relatedProduct.image || "/placeholder.svg"}
-                          alt={relatedProduct.name}
-                          fill
-                          className="object-cover transition-transform duration-700 hover:scale-110"
-                        />
-
-                        {/* Holographic effect overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 to-blue-500/10 opacity-0 hover:opacity-100 transition-opacity duration-300" />
-                      </div>
-                      <div className="p-5">
-                        <h3 className="font-semibold text-lg mb-1 hover:text-primary transition-colors">
-                          {relatedProduct.name}
-                        </h3>
-                        <p className="text-gray-400 text-sm mb-3 line-clamp-2">
-                          {relatedProduct.description.substring(0, 60)}...
-                        </p>
-                        <p className="font-bold text-xl text-primary">€{relatedProduct.price.toFixed(2)}</p>
-                      </div>
-                    </Link>
-                  </motion.div>
-                ))}
-            </motion.div>
+          {/* Related products */}
+          <section className="mt-16 pt-10 border-t border-border">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold">Produits similaires</h2>
+              <Link href="/products" className="text-sm text-[hsl(211,100%,44%)] font-medium hover:underline flex items-center gap-1">
+                Voir tout <ArrowLeft className="h-4 w-4 rotate-180" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {products.filter((p) => p.id !== product.id).slice(0, 4).map((p) => (
+                <Link key={p.id} href={`/products/${p.id}`} className="group">
+                  <div className="bg-white border border-border rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
+                    <div className="relative aspect-square bg-[#f5f5f7] overflow-hidden">
+                      <Image src={p.image} alt={p.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                    </div>
+                    <div className="p-3">
+                      <p className="text-xs text-muted-foreground mb-1 capitalize">{p.category}</p>
+                      <p className="font-semibold text-sm line-clamp-1 mb-1">{p.name}</p>
+                      <p className="font-bold text-sm">€{p.price.toLocaleString("fr-FR")}</p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </section>
         </div>
       </main>
+
+      <Footer />
     </div>
   )
 }
-

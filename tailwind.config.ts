@@ -19,6 +19,9 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-inter)", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -53,11 +56,6 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        neon: {
-          purple: "#c084fc",
-          blue: "#818cf8",
-          pink: "#e879f9",
-        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -73,19 +71,10 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        glow: {
-          "0%, 100%": {
-            boxShadow: "0 0 5px theme('colors.purple.400'), 0 0 15px theme('colors.purple.600')",
-          },
-          "50%": {
-            boxShadow: "0 0 20px theme('colors.purple.400'), 0 0 30px theme('colors.purple.600')",
-          },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        glow: "glow 2s ease-in-out infinite",
       },
     },
   },
@@ -93,4 +82,3 @@ const config = {
 } satisfies Config
 
 export default config
-

@@ -1,27 +1,22 @@
 "use client"
-//fonctionnalités de recherche, de filtrage et d'affichage des produits    "Catalogue Technologique"
+
 import { useState } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
-import { Search, Filter, X } from "lucide-react"
-
+import { Search, SlidersHorizontal, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
-import { Badge } from "@/components/ui/badge"
 import { products } from "@/lib/products"
 import FuturisticProductCard from "@/components/futuristic-product-card"
 
 export default function FuturisticProductStore() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
-  const [priceRange, setPriceRange] = useState([0, 200])
+  const [priceRange, setPriceRange] = useState([0, 2500])
   const [isFilterOpen, setIsFilterOpen] = useState(false)
 
-  // Get unique categories for filter
-  const categories = ["all", ...new Set(products.map((product) => product.category))]
+  const categories = ["all", ...new Set(products.map((p) => p.category))]
 
-  // Filter products based on search, category and price
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesCategory = selectedCategory === "all" || product.category === selectedCategory
@@ -29,219 +24,156 @@ export default function FuturisticProductStore() {
     return matchesSearch && matchesCategory && matchesPrice
   })
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 },
+  const categoryLabels: Record<string, string> = {
+    all: "Tout afficher",
+    smartphones: "Smartphones",
+    ordinateurs: "Ordinateurs",
+    audio: "Audio",
+    tablettes: "Tablettes",
+    montres: "Montres",
+    "électroménager": "Électroménager",
   }
 
   return (
-    <div>
-      <div className="flex flex-col lg:flex-row gap-8 mb-8">
-        {/* Mobile filter toggle */}
-        <div className="lg:hidden flex justify-between items-center">
-          <Button
-            variant="outline"
-            className="border-primary/50 hover:bg-primary/20"
-            onClick={() => setIsFilterOpen(!isFilterOpen)}
-          >
-            <Filter className="h-4 w-4 mr-2" />
-            Filtres
-          </Button>
+    <div className="flex flex-col lg:flex-row gap-8">
+      {/* Mobile filter toggle */}
+      <div className="lg:hidden flex items-center justify-between">
+        <p className="text-sm text-muted-foreground">{filteredProducts.length} produit{filteredProducts.length === 1 ? "" : "s"}</p>
+        <Button variant="outline" size="sm" className="gap-2" onClick={() => setIsFilterOpen(true)}>
+          <SlidersHorizontal className="h-4 w-4" />
+          Filtres
+        </Button>
+      </div>
 
-          <div className="text-sm text-gray-400">{filteredProducts.length} produits</div>
-        </div>
-
-        {/* Filters - Mobile */}
-        <motion.div
-          className="lg:hidden fixed inset-0 z-50 bg-background/95 backdrop-blur-md"
-          initial={{ x: "100%" }}
-          animate={{ x: isFilterOpen ? 0 : "100%" }}
-          transition={{ duration: 0.3 }}
-          style={{ display: isFilterOpen ? "block" : "none" }}
-        >
-          <div className="p-6 h-full overflow-auto">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-bold">Filtres</h3>
-              <Button variant="ghost" size="icon" onClick={() => setIsFilterOpen(false)}>
+      {/* Mobile filter drawer */}
+      {isFilterOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 bg-white overflow-auto">
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-8">
+              <h3 className="font-bold text-lg">Filtres</h3>
+              <button onClick={() => setIsFilterOpen(false)} className="p-2 rounded-lg hover:bg-muted">
                 <X className="h-5 w-5" />
-              </Button>
+              </button>
             </div>
-
-            <div className="space-y-8">
-              <div>
-                <h4 className="text-sm font-medium mb-3">Catégories</h4>
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((category) => (
-                    <Badge
-                      key={category}
-                      variant={selectedCategory === category ? "default" : "outline"}
-                      className={`capitalize cursor-pointer ${
-                        selectedCategory === category
-                          ? "bg-primary hover:bg-primary/80"
-                          : "hover:bg-primary/20 border-primary/50"
-                      }`}
-                      onClick={() => setSelectedCategory(category)}
-                    >
-                      {category === "all" ? "Toutes" : category}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h4 className="text-sm font-medium mb-3">Prix</h4>
-                <div className="px-2">
-                  <Slider
-                    defaultValue={[0, 200]}
-                    max={200}
-                    step={1}
-                    value={priceRange}
-                    onValueChange={setPriceRange}
-                    className="mb-6"
-                  />
-                  <div className="flex justify-between text-sm text-gray-400">
-                    <span>€{priceRange[0]}</span>
-                    <span>€{priceRange[1]}</span>
-                  </div>
-                </div>
-              </div>
-
-              <Button
-                className="w-full"
-                onClick={() => {
-                  setSelectedCategory("all")
-                  setPriceRange([0, 200])
-                  setSearchQuery("")
-                }}
-              >
-                Réinitialiser les filtres
-              </Button>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Filters - Desktop */}
-        <div className="hidden lg:block w-64 space-y-8">
-          <div>
-            <h3 className="text-lg font-medium mb-4 gradient-text">Filtres</h3>
-
-            <div className="space-y-6">
-              <div>
-                <h4 className="text-sm font-medium mb-3">Catégories</h4>
-                <div className="flex flex-col gap-2">
-                  {categories.map((category) => (
-                    <Badge
-                      key={category}
-                      variant={selectedCategory === category ? "default" : "outline"}
-                      className={`capitalize cursor-pointer w-fit ${
-                        selectedCategory === category
-                          ? "bg-primary hover:bg-primary/80"
-                          : "hover:bg-primary/20 border-primary/50"
-                      }`}
-                      onClick={() => setSelectedCategory(category)}
-                    >
-                      {category === "all" ? "Toutes" : category}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h4 className="text-sm font-medium mb-3">Prix</h4>
-                <div className="px-2">
-                  <Slider
-                    defaultValue={[0, 200]}
-                    max={200}
-                    step={1}
-                    value={priceRange}
-                    onValueChange={setPriceRange}
-                    className="mb-6"
-                  />
-                  <div className="flex justify-between text-sm text-gray-400">
-                    <span>€{priceRange[0]}</span>
-                    <span>€{priceRange[1]}</span>
-                  </div>
-                </div>
-              </div>
-
-              <Button
-                variant="outline"
-                className="w-full border-primary/50 hover:bg-primary/20"
-                onClick={() => {
-                  setSelectedCategory("all")
-                  setPriceRange([0, 200])
-                  setSearchQuery("")
-                }}
-              >
-                Réinitialiser
-              </Button>
-            </div>
+            <FilterContent
+              categories={categories}
+              categoryLabels={categoryLabels}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              priceRange={priceRange}
+              setPriceRange={setPriceRange}
+              onReset={() => { setSelectedCategory("all"); setPriceRange([0, 2500]); setSearchQuery("") }}
+            />
+            <Button className="w-full mt-8 bg-[hsl(211,100%,44%)] hover:bg-[hsl(211,100%,38%)] text-white" onClick={() => setIsFilterOpen(false)}>
+              Voir {filteredProducts.length} produit{filteredProducts.length === 1 ? "" : "s"}
+            </Button>
           </div>
         </div>
+      )}
 
-        <div className="flex-1">
-          {/* Search */}
-          <div className="relative mb-8">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+      {/* Desktop sidebar */}
+      <aside className="hidden lg:block w-60 flex-shrink-0">
+        <div className="sticky top-24 bg-white border border-border rounded-2xl p-5">
+          <h3 className="font-bold text-sm mb-5 uppercase tracking-wide">Filtres</h3>
+          <FilterContent
+            categories={categories}
+            categoryLabels={categoryLabels}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            priceRange={priceRange}
+            setPriceRange={setPriceRange}
+            onReset={() => { setSelectedCategory("all"); setPriceRange([0, 2500]); setSearchQuery("") }}
+          />
+        </div>
+      </aside>
+
+      {/* Product grid */}
+      <div className="flex-1">
+        {/* Search + count */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Rechercher des produits..."
-              className="pl-10 bg-background/50 border-primary/30 focus:border-primary"
+              placeholder="Rechercher un produit..."
+              className="pl-10 h-11 rounded-xl"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-
-          {/* Results count - Desktop */}
-          <div className="hidden lg:flex justify-between items-center mb-6">
-            <div className="text-sm text-gray-400">{filteredProducts.length} produits trouvés</div>
-          </div>
-
-          {/* Products grid */}
-          {filteredProducts.length === 0 ? (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-16">
-              <p className="text-gray-400 mb-4">Aucun produit ne correspond à votre recherche.</p>
-              <Button
-                variant="outline"
-                className="border-primary/50 hover:bg-primary/20"
-                onClick={() => {
-                  setSelectedCategory("all")
-                  setPriceRange([0, 200])
-                  setSearchQuery("")
-                }}
-              >
-                Réinitialiser les filtres
-              </Button>
-            </motion.div>
-          ) : (
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="show"
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
-              {filteredProducts.map((product) => (
-                <motion.div key={product.id} variants={itemVariants}>
-                  <Link href={`/products/${product.id}`}>
-                    <FuturisticProductCard product={product} />
-                  </Link>
-                </motion.div>
-              ))}
-            </motion.div>
-          )}
+          <p className="hidden lg:flex items-center text-sm text-muted-foreground whitespace-nowrap">
+            {filteredProducts.length} produit{filteredProducts.length === 1 ? "" : "s"}
+          </p>
         </div>
+
+        {filteredProducts.length === 0 ? (
+          <div className="text-center py-24 border border-dashed border-border rounded-2xl">
+            <p className="text-muted-foreground mb-4">Aucun produit trouvé.</p>
+            <Button variant="outline" onClick={() => { setSelectedCategory("all"); setPriceRange([0, 2500]); setSearchQuery("") }}>
+              Réinitialiser les filtres
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+            {filteredProducts.map((product) => (
+              <Link key={product.id} href={`/products/${product.id}`}>
+                <FuturisticProductCard product={product} />
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
 }
 
+interface FilterContentProps {
+  readonly categories: string[]
+  readonly categoryLabels: Record<string, string>
+  readonly selectedCategory: string
+  readonly setSelectedCategory: (c: string) => void
+  readonly priceRange: number[]
+  readonly setPriceRange: (r: number[]) => void
+  readonly onReset: () => void
+}
+
+function FilterContent({ categories, categoryLabels, selectedCategory, setSelectedCategory, priceRange, setPriceRange, onReset }: FilterContentProps) {
+  return (
+    <div className="space-y-6">
+      <div>
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Catégories</p>
+        <div className="flex flex-col gap-1">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                selectedCategory === cat
+                  ? "bg-[hsl(211,100%,44%)]/10 text-[hsl(211,100%,44%)] font-semibold"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              }`}
+            >
+              {categoryLabels[cat] ?? cat}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="h-px bg-border" />
+
+      <div>
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-4">Prix</p>
+        <Slider defaultValue={[0, 2500]} max={2500} step={50} value={priceRange} onValueChange={setPriceRange} className="mb-3" />
+        <div className="flex justify-between text-sm font-medium">
+          <span>€{priceRange[0]}</span>
+          <span>€{priceRange[1]}</span>
+        </div>
+      </div>
+
+      <div className="h-px bg-border" />
+
+      <button onClick={onReset} className="text-xs text-[hsl(211,100%,44%)] hover:underline font-medium">
+        Réinitialiser les filtres
+      </button>
+    </div>
+  )
+}

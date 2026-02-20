@@ -3,13 +3,23 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { CartProvider } from "@/lib/cart-context"
+import { Toaster } from "sonner"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", weight: ["400", "500", "600", "700", "800"] })
 
 export const metadata: Metadata = {
-  title: "NeoStore - Boutique Futuriste",
-  description: "Découvrez notre collection de produits innovants",
-    generator: 'v0.dev'
+  title: {
+    default: "NeoStore — Électronique Premium",
+    template: "%s | NeoStore",
+  },
+  description: "Smartphones, ordinateurs, audio et électroménager au meilleur prix. Livraison gratuite et retours 30 jours.",
+  openGraph: {
+    title: "NeoStore — Électronique Premium",
+    description: "Smartphones, ordinateurs, audio et électroménager au meilleur prix.",
+    type: "website",
+    locale: "fr_FR",
+  },
 }
 
 export default function RootLayout({
@@ -18,16 +28,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="fr" className="dark">
-      <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-          {children}
+    <html lang="fr" suppressHydrationWarning>
+      <body className={`${inter.variable} font-sans`}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
+          <CartProvider>
+            {children}
+            <Toaster theme="light" richColors position="bottom-right" />
+          </CartProvider>
         </ThemeProvider>
       </body>
     </html>
   )
 }
-
-
-
-import './globals.css'
