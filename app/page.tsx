@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Star, Truck, RotateCcw, Shield, Headphones, ChevronRight } from "lucide-react"
+import { ArrowRight, ArrowUpRight } from "lucide-react"
 import FuturisticNavbar from "@/components/futuristic-navbar"
 import Footer from "@/components/footer"
 import { products } from "@/lib/products"
@@ -13,187 +13,192 @@ export default function Home() {
   useEffect(() => { setMounted(true) }, [])
   if (!mounted) return null
 
-  const featuredProducts = products.slice(0, 4)
-
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-[#07070e] flex flex-col">
       <FuturisticNavbar />
 
-      {/* Hero */}
-      <section className="relative bg-[#1d1d1f] text-white overflow-hidden">
+      {/* Hero — plein écran sombre */}
+      <section className="relative min-h-screen flex items-center overflow-hidden">
+        {/* Video */}
         <div className="absolute inset-0">
-          <video src="/tech_paris.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover opacity-40" />
+          <video src="/hero_tech.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover opacity-20" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#07070e]/70 via-[#07070e]/30 to-[#07070e]" />
         </div>
-        <div className="relative container mx-auto px-4 py-28 md:py-36">
-          <div className="max-w-2xl">
-            <p className="text-[hsl(211,100%,70%)] text-sm font-semibold uppercase tracking-widest mb-4">
-              Tech Paris — Spécialiste Électronique
-            </p>
-            <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
-              La tech premium<br />au cœur de Paris
+
+        {/* Grille décorative */}
+        <div
+          className="absolute inset-0 opacity-[0.025]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(212,168,83,1) 1px, transparent 1px), linear-gradient(to right, rgba(212,168,83,1) 1px, transparent 1px)",
+            backgroundSize: "72px 72px",
+          }}
+        />
+
+        {/* Halo doré */}
+        <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] rounded-full bg-[#d4a853]/5 blur-[120px] pointer-events-none" />
+
+        <div className="relative container mx-auto px-4 py-32 md:py-40">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2.5 border border-[#d4a853]/25 text-[#d4a853] text-xs font-medium uppercase tracking-widest px-4 py-2 rounded-full mb-10">
+              <span className="w-1.5 h-1.5 bg-[#d4a853] rounded-full animate-pulse" />
+              <span>Tech Paris — Spécialiste Électronique</span>
+            </div>
+
+            <h1 className="text-5xl md:text-7xl font-bold leading-[1.05] tracking-tight text-white mb-6">
+              La tech premium<br />
+              <span className="text-[#d4a853]">au cœur de Paris</span>
             </h1>
-            <p className="text-lg text-white/70 mb-10 max-w-lg leading-relaxed">
-              iPhone, MacBook, Samsung et plus. Les meilleures marques au meilleur prix, livrées partout en France.
+            <p className="text-lg text-white/45 mb-12 max-w-xl leading-relaxed">
+              iPhone, MacBook, Samsung et plus — les meilleures marques livrées partout en France.
             </p>
+
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/products"
-                className="inline-flex items-center justify-center gap-2 bg-[hsl(211,100%,44%)] hover:bg-[hsl(211,100%,38%)] text-white font-semibold px-8 py-3.5 rounded-xl transition-colors text-sm"
+                className="inline-flex items-center justify-center gap-2.5 bg-[#d4a853] hover:bg-[#c9a047] text-[#07070e] font-semibold px-8 py-4 rounded-xl transition-colors text-sm"
               >
-                Voir tous les produits <ArrowRight className="h-4 w-4" />
+                Explorer la boutique <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/notre-histoire"
-                className="inline-flex items-center justify-center gap-2 border border-white/30 hover:bg-white/10 text-white font-semibold px-8 py-3.5 rounded-xl transition-colors text-sm"
+                className="inline-flex items-center justify-center gap-2 border border-white/10 hover:border-white/25 hover:bg-white/5 text-white/60 hover:text-white font-medium px-8 py-4 rounded-xl transition-all text-sm"
               >
                 Notre histoire
               </Link>
             </div>
           </div>
         </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+          <div className="w-px h-12 bg-gradient-to-b from-transparent to-[#d4a853]/30" />
+          <span className="text-white/20 text-[10px] uppercase tracking-widest">Scroll</span>
+        </div>
       </section>
 
-      {/* Trust bar */}
-      <section className="bg-[#f5f5f7] border-b border-border">
-        <div className="container mx-auto px-4 py-5">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-0 md:divide-x divide-border">
+      {/* ── Produits — juste après le hero ── */}
+      <section className="py-24 bg-[#07070e]">
+        <div className="container mx-auto px-4">
+          <div className="flex items-end justify-between mb-14">
+            <div>
+              <p className="text-[#d4a853] text-xs font-medium uppercase tracking-widest mb-3">Notre Collection</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+                Les produits<br className="hidden sm:block" /> les plus demandés
+              </h2>
+            </div>
+            <Link
+              href="/products"
+              className="hidden md:flex items-center gap-1.5 text-white/35 hover:text-white text-sm transition-colors group"
+            >
+              Voir tout
+              <ArrowUpRight className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </Link>
+          </div>
+
+          {/* Grille produits avec tooltip au survol */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            {products.map((product) => (
+              <Link
+                key={product.id}
+                href={`/products/${product.id}`}
+                className="group relative block overflow-hidden rounded-2xl bg-[#0d0d1a] border border-white/[0.05] hover:border-[#d4a853]/25 transition-all duration-300"
+              >
+                {/* Image */}
+                <div className="relative aspect-[3/4] overflow-hidden">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d1a] via-[#0d0d1a]/20 to-transparent" />
+                </div>
+
+                {/* Info par défaut */}
+                <div className="p-4 transition-opacity duration-200 group-hover:opacity-0">
+                  <p className="text-[#d4a853]/60 text-[10px] uppercase tracking-widest mb-1">{product.category}</p>
+                  <h3 className="text-white font-semibold text-sm leading-snug line-clamp-2 mb-2">{product.name}</h3>
+                  <p className="text-[#d4a853] font-bold text-sm">€{product.price.toLocaleString("fr-FR")}</p>
+                </div>
+
+                {/* Tooltip au survol — glisse depuis le bas */}
+                <div className="absolute inset-x-0 bottom-0 p-5 bg-[#0a0a18]/96 backdrop-blur-xl border-t border-[#d4a853]/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out">
+                  <p className="text-[#d4a853] text-[10px] font-medium uppercase tracking-widest mb-2">{product.category}</p>
+                  <h3 className="text-white font-bold text-sm mb-2 line-clamp-1">{product.name}</h3>
+                  <p className="text-white/40 text-xs leading-relaxed mb-4 line-clamp-3">{product.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[#d4a853] font-bold text-base">€{product.price.toLocaleString("fr-FR")}</span>
+                    <span className="flex items-center gap-1 text-white/40 text-xs">
+                      Découvrir <ArrowUpRight className="h-3 w-3" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-10 text-center md:hidden">
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-2 border border-white/10 hover:border-[#d4a853]/30 text-white/50 hover:text-white text-sm px-6 py-3 rounded-xl transition-all"
+            >
+              Voir tous les produits <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Stats ── */}
+      <section className="border-y border-white/[0.05] bg-[#0a0a16] py-10">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
-              { icon: Truck, title: "Livraison gratuite", sub: "Dès €50 d'achat" },
-              { icon: RotateCcw, title: "Retours gratuits", sub: "Sous 30 jours" },
-              { icon: Shield, title: "Paiement sécurisé", sub: "100% protégé" },
-              { icon: Headphones, title: "SAV 7j/7", sub: "Toujours disponible" },
-            ].map(({ icon: Icon, title, sub }) => (
-              <div key={title} className="flex items-center gap-3 md:justify-center md:px-6">
-                <div className="w-10 h-10 rounded-full bg-[hsl(211,100%,44%)]/10 flex items-center justify-center flex-shrink-0">
-                  <Icon className="h-5 w-5 text-[hsl(211,100%,44%)]" />
-                </div>
-                <div>
-                  <p className="font-semibold text-sm text-foreground">{title}</p>
-                  <p className="text-xs text-muted-foreground">{sub}</p>
-                </div>
+              { value: "50 000+", label: "Clients satisfaits" },
+              { value: "7 ans", label: "D'expertise" },
+              { value: "4.9 / 5", label: "Note moyenne" },
+              { value: "Paris", label: "Basé en France" },
+            ].map((stat) => (
+              <div key={stat.label}>
+                <p className="text-2xl md:text-3xl font-bold text-[#d4a853] mb-1">{stat.value}</p>
+                <p className="text-[10px] text-white/30 uppercase tracking-wider">{stat.label}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Categories */}
-      <section className="py-16 container mx-auto px-4">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-bold text-foreground">Nos catégories</h2>
-          <Link href="/products" className="text-sm text-[hsl(211,100%,44%)] font-medium flex items-center gap-1 hover:underline">
-            Tout voir <ChevronRight className="h-4 w-4" />
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-          {[
-            { label: "Smartphones", emoji: "📱", slug: "smartphones" },
-            { label: "Ordinateurs", emoji: "💻", slug: "ordinateurs" },
-            { label: "Audio", emoji: "🎧", slug: "audio" },
-            { label: "Tablettes", emoji: "📲", slug: "tablettes" },
-            { label: "Montres", emoji: "⌚", slug: "montres" },
-            { label: "Électroménager", emoji: "🏠", slug: "électroménager" },
-          ].map((cat) => (
-            <Link
-              key={cat.slug}
-              href={`/products?category=${cat.slug}`}
-              className="flex flex-col items-center gap-2 p-4 rounded-2xl bg-[#f5f5f7] hover:bg-[hsl(211,100%,44%)]/10 hover:ring-2 hover:ring-[hsl(211,100%,44%)] transition-all group"
-            >
-              <span className="text-3xl">{cat.emoji}</span>
-              <span className="text-xs font-semibold text-foreground group-hover:text-[hsl(211,100%,44%)] text-center">{cat.label}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      <section className="py-6 pb-20 container mx-auto px-4">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-2xl font-bold text-foreground">Meilleures ventes</h2>
-            <p className="text-sm text-muted-foreground mt-1">Les produits les plus appréciés de nos clients parisiens</p>
+      {/* ── Univers par catégorie ── */}
+      <section className="py-24 bg-[#07070e]">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-14">
+            <p className="text-[#d4a853] text-xs font-medium uppercase tracking-widest mb-3">Explorer</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white">Par univers</h2>
           </div>
-          <Link href="/products" className="text-sm text-[hsl(211,100%,44%)] font-medium flex items-center gap-1 hover:underline">
-            Voir tout <ChevronRight className="h-4 w-4" />
-          </Link>
-        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {featuredProducts.map((product) => (
-            <Link key={product.id} href={`/products/${product.id}`} className="group">
-              <div className="bg-white border border-border rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                <div className="relative aspect-square bg-[#f5f5f7] overflow-hidden">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[
+              { name: "Smartphones", image: "/iphone.jpg", desc: "iPhone, Samsung et plus", slug: "smartphones" },
+              { name: "Ordinateurs", image: "/macbook.jpg", desc: "MacBook Pro, ultrabooks", slug: "ordinateurs" },
+              { name: "Audio & Son", image: "/airpods.jpg", desc: "AirPods, casques premium", slug: "audio" },
+            ].map((cat) => (
+              <Link
+                key={cat.name}
+                href={`/products?category=${cat.slug}`}
+                className="group relative block rounded-2xl overflow-hidden h-72 border border-white/[0.05] hover:border-[#d4a853]/20 transition-all duration-300"
+              >
+                <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#07070e]/90 via-[#07070e]/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 p-6">
+                  <h3 className="text-white font-bold text-xl mb-1">{cat.name}</h3>
+                  <p className="text-white/45 text-sm">{cat.desc}</p>
                 </div>
-                <div className="p-4">
-                  <p className="text-xs font-semibold text-[hsl(211,100%,44%)] uppercase tracking-wide mb-1">{product.category}</p>
-                  <h3 className="font-semibold text-foreground text-sm leading-snug mb-2 line-clamp-2">{product.name}</h3>
-                  <div className="flex items-center gap-1 mb-3">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star key={star} className={`h-3.5 w-3.5 ${star <= product.rating ? "fill-amber-400 text-amber-400" : "text-gray-300"}`} />
-                    ))}
-                    <span className="text-xs text-muted-foreground ml-1">({product.reviewCount})</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold text-foreground">€{product.price.toLocaleString("fr-FR")}</span>
-                    <span className="text-xs bg-green-100 text-green-700 font-medium px-2 py-0.5 rounded-full">En stock</span>
-                  </div>
+                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#d4a853]/10 border border-[#d4a853]/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <ArrowUpRight className="h-4 w-4 text-[#d4a853]" />
                 </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Promo Banner */}
-      <section className="bg-[#1d1d1f] text-white py-20">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-[hsl(211,100%,70%)] text-sm font-semibold uppercase tracking-widest mb-4">Offre Paris Exclusive</p>
-          <h2 className="text-3xl md:text-5xl font-extrabold mb-6">
-            Jusqu'à <span className="text-[hsl(211,100%,70%)]">-30%</span> sur<br className="hidden md:block" /> une sélection de produits
-          </h2>
-          <p className="text-white/60 mb-10 max-w-md mx-auto">
-            Tech Paris vous propose les meilleures offres sur iPhone, MacBook, Samsung et bien plus encore.
-          </p>
-          <Link
-            href="/products"
-            className="inline-flex items-center gap-2 bg-[hsl(211,100%,44%)] hover:bg-[hsl(211,100%,38%)] text-white font-semibold px-10 py-4 rounded-xl transition-colors"
-          >
-            Voir les offres <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </section>
-
-      {/* Big Category Cards */}
-      <section className="py-16 container mx-auto px-4">
-        <h2 className="text-2xl font-bold text-foreground mb-8">Explorer par univers</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {[
-            { name: "Smartphones", image: "/iphone.jpg", desc: "iPhone, Samsung et plus" },
-            { name: "Ordinateurs", image: "/macbook.jpg", desc: "MacBook Pro, ultrabooks" },
-            { name: "Audio", image: "/airpods.jpg", desc: "AirPods, casques premium" },
-          ].map((cat) => (
-            <Link
-              key={cat.name}
-              href={`/products?category=${cat.name.toLowerCase()}`}
-              className="group relative rounded-2xl overflow-hidden h-56 block"
-            >
-              <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-              <div className="absolute bottom-0 left-0 p-6">
-                <h3 className="text-white font-bold text-xl mb-1">{cat.name}</h3>
-                <p className="text-white/70 text-sm">{cat.desc}</p>
-              </div>
-              <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <ArrowRight className="h-4 w-4 text-white" />
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 

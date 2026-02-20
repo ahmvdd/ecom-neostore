@@ -38,8 +38,13 @@ export default function FuturisticProductStore() {
     <div className="flex flex-col lg:flex-row gap-8">
       {/* Mobile filter toggle */}
       <div className="lg:hidden flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">{filteredProducts.length} produit{filteredProducts.length === 1 ? "" : "s"}</p>
-        <Button variant="outline" size="sm" className="gap-2" onClick={() => setIsFilterOpen(true)}>
+        <p className="text-sm text-white/40">{filteredProducts.length} produit{filteredProducts.length === 1 ? "" : "s"}</p>
+        <Button
+          variant="outline"
+          size="sm"
+          className="gap-2 border-white/10 text-white/60 hover:text-white hover:bg-white/5"
+          onClick={() => setIsFilterOpen(true)}
+        >
           <SlidersHorizontal className="h-4 w-4" />
           Filtres
         </Button>
@@ -47,11 +52,11 @@ export default function FuturisticProductStore() {
 
       {/* Mobile filter drawer */}
       {isFilterOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-white overflow-auto">
+        <div className="lg:hidden fixed inset-0 z-50 bg-[#07070e] overflow-auto">
           <div className="p-6">
             <div className="flex items-center justify-between mb-8">
-              <h3 className="font-bold text-lg">Filtres</h3>
-              <button onClick={() => setIsFilterOpen(false)} className="p-2 rounded-lg hover:bg-muted">
+              <h3 className="font-bold text-lg text-white">Filtres</h3>
+              <button onClick={() => setIsFilterOpen(false)} className="p-2 rounded-lg hover:bg-white/5 text-white/60 hover:text-white">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -64,17 +69,20 @@ export default function FuturisticProductStore() {
               setPriceRange={setPriceRange}
               onReset={() => { setSelectedCategory("all"); setPriceRange([0, 2500]); setSearchQuery("") }}
             />
-            <Button className="w-full mt-8 bg-[hsl(211,100%,44%)] hover:bg-[hsl(211,100%,38%)] text-white" onClick={() => setIsFilterOpen(false)}>
+            <Button
+              className="w-full mt-8 bg-[#d4a853] hover:bg-[#c9a047] text-[#07070e] font-semibold"
+              onClick={() => setIsFilterOpen(false)}
+            >
               Voir {filteredProducts.length} produit{filteredProducts.length === 1 ? "" : "s"}
             </Button>
           </div>
         </div>
       )}
 
-      {/* Desktop sidebar */}
+      {/* Sidebar desktop */}
       <aside className="hidden lg:block w-60 flex-shrink-0">
-        <div className="sticky top-24 bg-white border border-border rounded-2xl p-5">
-          <h3 className="font-bold text-sm mb-5 uppercase tracking-wide">Filtres</h3>
+        <div className="sticky top-24 bg-[#0d0d1a] border border-white/[0.06] rounded-2xl p-5">
+          <h3 className="font-bold text-sm text-white/60 mb-5 uppercase tracking-widest">Filtres</h3>
           <FilterContent
             categories={categories}
             categoryLabels={categoryLabels}
@@ -87,28 +95,31 @@ export default function FuturisticProductStore() {
         </div>
       </aside>
 
-      {/* Product grid */}
+      {/* Grille produits */}
       <div className="flex-1">
-        {/* Search + count */}
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
             <Input
               placeholder="Rechercher un produit..."
-              className="pl-10 h-11 rounded-xl"
+              className="pl-10 h-11 rounded-xl bg-[#0d0d1a] border-white/[0.07] text-white placeholder:text-white/25 focus-visible:ring-[#d4a853]/50"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <p className="hidden lg:flex items-center text-sm text-muted-foreground whitespace-nowrap">
+          <p className="hidden lg:flex items-center text-sm text-white/30 whitespace-nowrap">
             {filteredProducts.length} produit{filteredProducts.length === 1 ? "" : "s"}
           </p>
         </div>
 
         {filteredProducts.length === 0 ? (
-          <div className="text-center py-24 border border-dashed border-border rounded-2xl">
-            <p className="text-muted-foreground mb-4">Aucun produit trouvé.</p>
-            <Button variant="outline" onClick={() => { setSelectedCategory("all"); setPriceRange([0, 2500]); setSearchQuery("") }}>
+          <div className="text-center py-24 border border-dashed border-white/[0.08] rounded-2xl">
+            <p className="text-white/30 mb-4">Aucun produit trouvé.</p>
+            <Button
+              variant="outline"
+              className="border-white/10 text-white/50 hover:text-white hover:bg-white/5"
+              onClick={() => { setSelectedCategory("all"); setPriceRange([0, 2500]); setSearchQuery("") }}
+            >
               Réinitialiser les filtres
             </Button>
           </div>
@@ -140,7 +151,7 @@ function FilterContent({ categories, categoryLabels, selectedCategory, setSelect
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Catégories</p>
+        <p className="text-[10px] font-semibold text-white/25 uppercase tracking-widest mb-3">Catégories</p>
         <div className="flex flex-col gap-1">
           {categories.map((cat) => (
             <button
@@ -148,8 +159,8 @@ function FilterContent({ categories, categoryLabels, selectedCategory, setSelect
               onClick={() => setSelectedCategory(cat)}
               className={`text-left px-3 py-2 rounded-lg text-sm transition-colors ${
                 selectedCategory === cat
-                  ? "bg-[hsl(211,100%,44%)]/10 text-[hsl(211,100%,44%)] font-semibold"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "bg-[#d4a853]/10 text-[#d4a853] font-semibold"
+                  : "text-white/40 hover:bg-white/5 hover:text-white"
               }`}
             >
               {categoryLabels[cat] ?? cat}
@@ -158,20 +169,20 @@ function FilterContent({ categories, categoryLabels, selectedCategory, setSelect
         </div>
       </div>
 
-      <div className="h-px bg-border" />
+      <div className="h-px bg-white/[0.06]" />
 
       <div>
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-4">Prix</p>
+        <p className="text-[10px] font-semibold text-white/25 uppercase tracking-widest mb-4">Prix</p>
         <Slider defaultValue={[0, 2500]} max={2500} step={50} value={priceRange} onValueChange={setPriceRange} className="mb-3" />
-        <div className="flex justify-between text-sm font-medium">
+        <div className="flex justify-between text-sm font-medium text-white/60">
           <span>€{priceRange[0]}</span>
           <span>€{priceRange[1]}</span>
         </div>
       </div>
 
-      <div className="h-px bg-border" />
+      <div className="h-px bg-white/[0.06]" />
 
-      <button onClick={onReset} className="text-xs text-[hsl(211,100%,44%)] hover:underline font-medium">
+      <button onClick={onReset} className="text-xs text-[#d4a853]/70 hover:text-[#d4a853] transition-colors font-medium">
         Réinitialiser les filtres
       </button>
     </div>

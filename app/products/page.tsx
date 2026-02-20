@@ -11,14 +11,15 @@ export default function ProductsPage() {
   if (!mounted) return null
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-[#07070e] flex flex-col">
       <FuturisticNavbar />
 
       <main className="flex-1 py-10">
         <div className="container mx-auto px-4">
           <div className="mb-10">
-            <h1 className="text-3xl font-extrabold text-foreground mb-2">Tous nos produits</h1>
-            <p className="text-muted-foreground">
+            <p className="text-[#d4a853] text-xs font-medium uppercase tracking-widest mb-3">Catalogue</p>
+            <h1 className="text-3xl font-bold text-white mb-2">Tous nos produits</h1>
+            <p className="text-white/35">
               Smartphones, ordinateurs, audio, tablettes et plus — les meilleures marques au meilleur prix.
             </p>
           </div>

@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 3% 12%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 3% 12%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 3% 12%;
-    --primary: 211 100% 44%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 240 5% 97%;
-    --secondary-foreground: 240 3% 12%;
-    --muted: 240 5% 97%;
-    --muted-foreground: 240 2% 44%;
-    --accent: 211 100% 44%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84.2% 60.2%;
+    --background: 240 43% 4%;
+    --foreground: 240 20% 96%;
+    --card: 240 38% 7%;
+    --card-foreground: 240 20% 96%;
+    --popover: 240 38% 7%;
+    --popover-foreground: 240 20% 96%;
+    --primary: 38 64% 58%;
+    --primary-foreground: 240 43% 4%;
+    --secondary: 240 25% 11%;
+    --secondary-foreground: 240 20% 96%;
+    --muted: 240 25% 11%;
+    --muted-foreground: 240 8% 52%;
+    --accent: 38 64% 58%;
+    --accent-foreground: 240 43% 4%;
+    --destructive: 0 62% 54%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 4% 88%;
-    --input: 240 4% 88%;
-    --ring: 211 100% 44%;
+    --border: 240 20% 13%;
+    --input: 240 20% 13%;
+    --ring: 38 64% 58%;
     --radius: 0.75rem;
   }
 }
@@ -33,18 +33,20 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: var(--font-space), var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
 }
 
 @layer utilities {
-  .blue-text {
-    color: hsl(211 100% 44%);
+  .gold-text {
+    color: hsl(38 64% 58%);
   }
-  .blue-bg {
-    background-color: hsl(211 100% 44%);
+  .gold-bg {
+    background-color: hsl(38 64% 58%);
   }
-  .trust-item {
-    @apply flex items-center gap-2 text-sm text-muted-foreground;
+  .glass-dark {
+    background: rgba(7, 7, 14, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
   }
 }
